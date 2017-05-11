@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/style.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/user.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
+{insert_scripts files='jquery.js,haohaios.js,user.js'}
+</head>
+<body>
+<div class="container">
+    <!--{if $action eq "account_raply" || $action eq "account_log" || $action eq "account_deposit" || $action eq "account_detail" || $action eq "integral_details"} --> 
+    <script type="text/javascript">
+          {foreach from=$lang.account_js item=item key=key}
+            var {$key} = "{$item}";
+          {/foreach}
+    </script>
+    <div class="account_top">
+        <p><a href="user.php?act=account_log">可用资金：{$surplus_amount}</a> <span><a href="user.php?act=integral_details">可用积分：{$points}</span></a></p>
+    </div>
+    <div class="nav_fixed" style="top:40px;"> 
+        <a href="user.php?act=account_detail"{if $action eq 'account_detail'} class="cur"{/if}>账目明细</a>
+        <a href="user.php?act=account_raply"{if $action eq 'account_raply'} class="cur"{/if}>提现</a>
+		<a href="user.php?act=account_deposit"{if $action eq 'account_deposit'} class="cur"{/if}>充值</a>
+        <a href="user.php?act=account_log"{if $action eq 'account_log'} class="cur"{/if}>申请记录</a>
+    </div>
+    <!-- {/if} -->
+    <div class="account_box"> 
+        <!-- {if $action eq "account_raply"} -->
+        <form name="formSurplus" method="post" action="user.php" onSubmit="return submitSurplus()">
+            <div class="account_deposit">
+                <h3>每次提现金额在￥1～￥200以内</h3>
+                <ul>
+                    <li>
+                        <input type="text" name="amount" value="{$order.amount|escape}" class="inp" placeholder="{$lang.repay_money}" />
+                    </li>
+                    <li>
+                        <textarea name="user_note" class="tex" placeholder="{$lang.process_notic}">{$order.user_note|escape}</textarea>
+                    </li>
+                    <li>
+                        <input type="hidden" name="surplus_type" value="1" />
+                        <input type="hidden" name="act" value="act_account" />
+                        <input type="submit" name="submit"  class="bnt" value="{$lang.submit_request}" />
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <!-- {/if} --> 
+        <!-- {if $action eq "account_deposit"} -->
+        <form name="formSurplus" method="post" action="user.php" onSubmit="return submitSurplus()">
+            <div class="account_deposit">
+                <ul>
+                    <li>
+                        <input type="text" name="amount" class="inp" value="{$order.amount|escape}" placeholder="{$lang.deposit_money}" />
+                    </li>
+                    <li>
+                        <textarea name="user_note" class="tex" placeholder="{$lang.process_notic}">{$order.user_note|escape}</textarea>
+                    </li>
+                    <li>
+                        <label>{$lang.payment}</label>
+                        {foreach from=$payment item=list}
+                        <input type="radio" name="payment_id" value="{$list.pay_id}" />
+                        {$list.pay_name}{/foreach}</li>
+                    <li>
+                        <input type="hidden" name="surplus_type" value="0" />
+                        <input type="hidden" name="rec_id" value="{$order.id}" />
+                        <input type="hidden" name="act" value="act_account" />
+                        <input type="submit" class="bnt" name="submit" value="{$lang.submit_request}" />
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <!-- {/if} --> 
+		<!-- {if $action eq "integral_details"} -->
+        <div class="account_detail">
+            <table width="100%" class="list_table">
+                <tr align="center">
+                    <td>日期</td>
+                    <td>积分</td>
+                    <td>变化原因</td>
+                </tr>
+                
+                <!--{foreach from=$my_points item=item}-->
+                
+                <tr>
+                    <td align="center">{$item.change_time}</td>
+                    <td align="center">{$item.pay_points}</td>
+                    <td align="center">{$item.change_desc}</td>
+                </tr>
+                
+                <!--{/foreach}-->
+                
+            </table>
+        </div>
+        <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+        <!-- {/if} --> 
+		
+		
+        <!-- {if $action eq "act_account"} -->
+        <table width="100%" class="list_table">
+            <tr>
+                <td width="25%" align="right">{$lang.surplus_amount}</td>
+                <td width="80%">{$amount}</td>
+            </tr>
+            <tr>
+                <td align="right">{$lang.payment_name}</td>
+                <td>{$payment.pay_name}</td>
+            </tr>
+            <tr>
+                <td align="right">{$lang.payment_fee}</td>
+                <td>{$pay_fee}</td>
+            </tr>
+            <tr>
+                <td align="right">{$lang.payment_desc}</td>
+                <td bgcolor="#ffffff">{$payment.pay_desc}</td>
+            </tr>
+            <tr>
+                <td colspan="2">{$payment.pay_button}</td>
+            </tr>
+        </table>
+        <!-- {/if} --> 
+        
+        <!-- {if $action eq "account_detail"} -->
+        <div class="account_detail">
+            <table width="100%" class="list_table">
+                <tr align="center">
+                    <td>{$lang.process_time}</td>
+                    <td>{$lang.surplus_pro_type}</td>
+                    <td>{$lang.money}</td>
+                    <td>{$lang.change_desc}</td>
+                </tr>
+                
+                <!--{foreach from=$account_log item=item}-->
+                
+                <tr>
+                    <td align="center">{$item.change_time}</td>
+                    <td align="center">{$item.type}</td>
+                    <td align="center">{$item.amount}</td>
+                    <td title="{$item.change_desc}">&nbsp;&nbsp;{$item.short_change_desc}</td>
+                </tr>
+                
+                <!--{/foreach}-->
+                
+            </table>
+        </div>
+        <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+        <!-- {/if} --> 
+        
+        <!-- {if $action eq "account_log"} -->
+        <div class="account_log">
+            <table width="100%" class="list_table">
+                <tr align="center">
+                    <td>{$lang.process_time}</td>
+                    <td>{$lang.surplus_pro_type}</td>
+                    <td>{$lang.money}</td>
+                    
+                    <!--td bgcolor="#ffffff">{$lang.process_notic}</td>
+
+            <td bgcolor="#ffffff">{$lang.admin_notic}</td-->
+                    
+                    <td>{$lang.is_paid}</td>
+                    <td>{$lang.handle}</td>
+                </tr>
+                
+                <!--{foreach from=$account_log item=item}-->
+                
+                <tr>
+                    <td align="center">{$item.add_time}</td>
+                    <td align="center">{$item.type}</td>
+                    <td align="center">{$item.amount}</td>
+                    
+                    <!--td align="left" bgcolor="#ffffff">{$item.short_user_note}</td>
+
+            <td align="left" bgcolor="#ffffff">{$item.short_admin_note}</td-->
+                    
+                    <td align="center">{$item.pay_status}</td>
+                    <td align="center">{$item.handle} 
+                        
+                        <!-- {if ($item.is_paid eq 0 && $item.process_type eq 1) || $item.handle} --> 
+                        
+                        <a href="user.php?act=cancel&id={$item.id}" onclick="if (!confirm('{$lang.confirm_remove_account}')) return false;">{$lang.is_cancel}</a> 
+                        
+                        <!-- {/if} --></td>
+                </tr>
+                
+                <!--{/foreach}-->
+                
+            </table>
+        </div>
+        <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+        <!-- {/if} -->
+    </div>
+</div>
+<div class="blank"></div>
+<div class="footer">
+    <ul>
+        <li><a href="index.php" class="nav-controller"><i class="icon-index"></i>首页</a></li>
+		<li><a href="catalog.php" class="nav-controller"><i class="icon-catalog"></i>分类</a></li>
+		<li><a href="square.php" class="nav-controller"><i class="icon-square"></i>广场</a></li>
+        <li><a href="rank.php?act=hot" class="nav-controller"><i class="icon-rank"></i>热榜</a></li>
+        <li><a href="user.php" class="nav-controller"><i class="icon-user"></i>个人中心</a></li>
+    </ul>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,32 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+                <div class="goods-comments-detail">
+                    <img class="goods-comments-avatar" src="{$comments.headimgurl}">
+                    <div class="goods-comments-name">{$comments.username}</div>
+                    <div class="goods-comments-time">{$comments.add_time}</div>
+                    <div class="goods-comments-stars">
+                    {if $comments.rank==1}
+                        <div class="goods-comments-stars-show"></div>
+                     {elseif $comments.rank==2}   
+                        <div class="goods-comments-stars-show"></div>
+                        <div class="goods-comments-stars-show"></div>
+                      {elseif $comments.rank==3}     
+                        <div class="goods-comments-stars-show"></div>
+                        <div class="goods-comments-stars-show"></div>
+                        <div class="goods-comments-stars-show"></div>
+                        {elseif $comments.rank==4}  
+                         <div class="goods-comments-stars-show"></div>
+                        <div class="goods-comments-stars-show"></div>
+                        <div class="goods-comments-stars-show"></div>
+                         <div class="goods-comments-stars-show"></div> 
+                         {elseif $comments.rank==5}  
+                         <div class="goods-comments-stars-show"></div>
+                        <div class="goods-comments-stars-show"></div>
+                        <div class="goods-comments-stars-show"></div>
+                         <div class="goods-comments-stars-show"></div> 
+                         <div class="goods-comments-stars-show"></div>
+                         {/if}
+                         
+                    </div>
+                    <div class="goods-comments-content">{$comments.content}</div>
+                </div>

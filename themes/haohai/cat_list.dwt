@@ -1,0 +1,47 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{insert_scripts files='utils.js'}
+{foreach from=$arr item=category key=key name=name}
+<div id="c_{$key}" class="ab" {if $smarty.foreach.name.index neq 0}style="display:none;"{/if}>
+     {foreach from=$category item=cat }
+     		
+            {if $cat.is_level}
+            {foreach from=$cat.cat_id item=cat_two }
+            <h4><span> | </span><a href="category.php?c_id={$cat_two.id}" title="{$cat_two.name}">{$cat_two.name}</a></h4>
+            <ul>
+            	
+                	{foreach from=$cat_two.cat_id item=cat_three }
+                    <li>
+                        <a href="category.php?c_id={$cat_three.id}" title="{$cat_three.name}">
+                        <img src="{if $cat_three.catPic}{$site_url}../data/mobileCatPic/{$cat_three.catPic}{else}{$site_url}../images/no_picture.gif{/if}" />
+                        <span>{$cat_three.name}</span>
+                        </a>
+                        
+                    </li>
+                    {/foreach}
+            </ul>
+            
+            {/foreach}
+            {else}
+            <h4><a href="category.php?c_id={$cat.id}" title="{$cat.name}">{$cat.name}</a></h4>
+            <ul>
+            	{foreach from=$cat.cat_id item=cat_two name=cat_two}
+            	<li>
+                   <a href="category.php?c_id={$cat_two.id}" title="{$cat_two.name}">
+                        <img src="{if $cat_two.catPic}{$site_url}../data/mobileCatPic/{$cat_two.catPic}{else}{$site_url}../images/no_picture.gif{/if}" />
+                        <span>{$cat_two.name}</span>
+                        </a>
+                   
+                </li>
+                {/foreach}
+             </ul>
+                	
+            {/if}
+        	
+		  
+        {/foreach}
+        
+     </div>   
+    {/foreach}	
+    	
+        
+ 

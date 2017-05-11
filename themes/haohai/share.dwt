@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$shop_name}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/style.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/share.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
+{insert_scripts files='jquery.js,haohaios.js,user.js'}
+</head>
+<body>
+    <div>
+        <div class="H5_con">
+  <!--{if $team_info.team_status eq 1 }-->    
+<div class="tips topStateWrap tips_succ tips_succ2">
+    <div class="tips_ico"></div>
+
+    <!--{if $is_team eq 1}-->  
+
+    <div class="tips_tit">快来入团吧</div>
+
+    <div class="tips_txt">就差你了</div>
+
+    <!--{else}-->
+
+    {if $order.team_first eq 1}
+
+    <div class="tips_tit">开团成功</div>
+
+    {else}
+
+    <div class="tips_tit">参团成功</div>
+
+    {/if}
+
+    
+
+    <div class="tips_txt">快去邀请好友加入吧</div>
+
+    <!--{/if}-->
+
+</div>
+
+<!--{/if}-->
+
+ 
+
+<!--{if $team_info.team_status eq 2 }--> 
+
+	<!-- {if $is_teammen gt 0}   -->
+
+	 
+
+<div class="tips topStateWrap tips_succ tips_succ2">
+
+	 <div class="tips_ico"></div>
+
+	 <div class="tips_tit">团购成功</div>
+
+     <div class="tips_txt">我们会尽快为您发货，请耐心等待</div>
+
+</div> 
+
+<!-- {else} --> 
+
+<div class="tips topStateWrap tips_err">
+
+	<div class="tips_ico"></div>
+
+    <div class="tips_tit">来晚了一步 此团满员啦</div>
+
+    <div class="tips_txt">你可以点击底部红色按钮再开一个团 </div>
+
+</div>
+
+ <!-- {/if} -->
+
+<!--{/if}-->
+
+<!--{if $team_info.team_status eq 3 or $team_info.team_status eq 4}-->   
+
+<!-- {if $is_teammen gt 0}   --> 
+
+<div class="tips topStateWrap tips_err">
+
+    <div class="tips_ico"></div>
+
+    <div class="tips_tit">团购失败</div>
+
+    <div class="tips_txt">你可以点击底部红色按钮重新开团</div>
+
+</div> 
+
+<!-- {else} -->
+
+<div class="tips topStateWrap tips_err">
+
+    <div class="tips_ico"></div>
+
+    <div class="tips_tit">来晚了一步！</div>
+
+</div>
+
+ <!-- {/if} -->
+
+<!--{/if}-->
+
+        
+
+        </div>
+
+         <!--{if $team_info.team_status eq 1 }-->    
+
+        <div class="share_box">
+
+            <a class="share_link" id="share_button" href="javascript:void(0);" onclick="document.getElementById('share_img').style.display='';">直接分享好友参团</a>
+
+            <!--a class="share_pic" id="share_button" href="javascript:void(0);" onclick="document.getElementById('share_pic').style.display='';">二维码分享好友参团</a-->
+
+        </div>
+
+        <!-- {/if} -->
+
+        <div class="H5_con">
+
+               
+
+            <div id="group_detail" class="tm {if $team_info.team_status eq 1}{elseif $team_info.team_status eq 2}tm_succ{else}tm_err{/if}"><!--团购成功-->
+
+            
+
+                <!-- {foreach from=$goods_list item=goods} -->
+
+                
+
+                    <div class="td tuanDetailWrap">
+
+                        <div class="td_img"><a class="goItemPage" href="goods_tz.php?id={$goods.goods_id}&team_sign={$team_info.team_sign}&is_team={$is_team}"><img src="{$goods.goods_thumb}"></a></div>
+
+                        <div class="td_info">
+
+                            <p class="td_name"><a class="goItemPage" href="goods_tz.php?id={$goods.goods_id}&team_sign={$team_info.team_sign}&is_team={$is_team}">{$goods.goods_name}</a></p>
+
+                            <p class="td_mprice"> <span class="tuanTotal">{$team_info.team_num}</span>人团： <i>¥</i><b>{$goods.goods_price}</b><i> /件</i></p>
+
+                            <!-- <p>查看详情</p> -->
+<div class="spec">
+<ul>
+<form action="javascript:addToCart({$team_info.extension_id},0,0,5,{$team_info.team_sign},{$team_info.shared_by});" method="post" name="HHS_FORMBUY" id="HHS_FORMBUY">
+{foreach from=$specification item=spec key=spec_key}
+    <li>
+        <label class="label_new">{$spec.name}：</label>
+        {foreach from=$spec.values item=value key=key}
+            <a {if $key eq 0}class="cattsel"{/if} onclick="changeAtt(this)" href="javascript:;" name="{$value.id}" title="[{if $value.price gt 0}{$lang.plus}{elseif $value.price lt 0}{$lang.minus}{/if} {$value.format_price|abs}]">{$value.label}<input style="display:none" id="spec_value_{$value.id}" type="radio" name="spec_{$spec_key}" value="{$value.id}" {if $key eq 0}checked{/if} /></a>
+        {/foreach}
+        <input type="hidden" name="spec_list" value="{$key}" />
+    </li>
+{/foreach}
+</form>
+</ul>
+</div>
+                        </div>
+
+                    </div>
+
+                
+
+                <!-- {/foreach} -->
+
+            </div>
+
+            <div class="pp">
+
+                <div class="pp_users" id="pp_users">
+
+                    <!-- {foreach from=$team_mem item=item} -->
+
+                    <a class="pp_users_item pp_users_normal" href="#"><img src="{$item.headimgurl}"></a>
+
+                    <!-- {/foreach} -->
+
+                    
+
+                    <!-- {foreach from=$d_num_arr item=item} -->
+
+                    <a class="pp_users_item pp_users_blank" href="#"><img alt="" src="themes/haohaios/images/avatar_4_64.png"></a>
+
+                     <!-- {/foreach} -->
+
+                  
+
+                </div>
+
+                <!--{if $team_info.team_status eq 2}-->
+
+                <div class="pp_tips" id="flag_1_a" >对于诸位大侠的相助，团长感激涕零</div>
+
+                 <!--{else}-->
+
+                 <div class="pp_tips" id="flag_1_a" >{$group_share_ads}</div>
+
+                 <!-- {/if} -->
+
+   
+
+                <!--{if $team_info.team_status eq 1}-->
+
+                <div class="pp_tips" id="flag_0_a" >还差<b>{$d_num}</b>人，盼你如南方人盼暖气~</div>
+
+               
+
+                <div class="pp_state" id="flag_0_b" >
+
+                    <div class="pp_time">
+
+                        剩余<font id="time"></font>结束
+
+                    </div>
+
+                </div>
+
+                <!--{/if}-->
+
+                <!--{if $team_info.team_status eq 2}-->
+
+                <!--div class="pp_state_txt" id="flag_1_b" >团购成功，我们会尽快为您发货，请耐心等待</div-->
+
+                <!--{/if}-->
+
+            </div>
+
+            <div class="pp_list">
+
+                <div id="showYaoheList">
+
+                     <!-- {foreach from=$team_mem item=item name=name} -->
+
+                     <!-- {if $item.team_first eq 1} -->
+
+                    <div class="pp_list_item">
+
+                        <img class="pp_list_avatar" alt="" src="{$item.headimgurl}">
+
+                        <div class="pp_list_info" id="pp_list_info">
+
+                            <span class="pp_list_name">团长<b>{$item.uname}</b></span>
+
+                            <span class="pp_list_time">{$item.date}开团 {if $item.is_lucker eq 1} <font color="red">幸运者</font>{/if}</span>
+
+                        </div>
+
+                    </div>
+
+                     <!-- {else} -->
+
+                    <div class="pp_list_item">
+
+                        <img class="pp_list_avatar" alt="" src="{$item.headimgurl}">
+
+                        <div class="pp_list_info" id="pp_list_info">
+
+                            <span class="pp_list_name"><b>{$item.uname}</b></span>
+
+                            <span class="pp_list_time">{$item.date}参团 {if $item.is_lucker eq 1} <font color="red">幸运者</font>{/if}</span>
+
+                        </div>
+
+                    </div>
+
+                     <!-- {/if} -->
+
+                     <!-- {/foreach} -->
+
+                </div>
+
+                
+
+                <!--{if $team_info.team_status eq 1}-->
+
+                <div id="chamemeber" class="pp_list_blank" >
+
+                    还差
+
+                    <span>{$d_num}</span> 人，让小伙伴们都来组团吧！
+
+                </div>
+
+                <!--{/if}-->
+
+            </div>
+
+        </div>
+
+        <!--div id="shareit">
+
+            <img class="arrow" src="http://dev.vxtong.com/cases/nuannan/imgs/share-it.png">
+
+        </div-->
+
+        <div class="step">
+
+            <div class="step_hd">
+
+                拼团玩法<a class="step_more" href="tuan_rule.php">查看详情</a>
+
+            </div>
+
+            <div id="footItem" class="step_list">
+
+                <div class="step_item">
+
+                    <div class="step_num">1</div>
+
+                    <div class="step_detail">
+
+                        <p class="step_tit">选择
+
+                            <br>心仪商品</p>
+
+                    </div>
+
+                </div>
+
+                <div class="step_item">
+
+                    <div class="step_num">2</div>
+
+                    <div class="step_detail">
+
+                        <p class="step_tit">支付开团
+
+                            <br>或参团</p>
+
+                    </div>
+
+                </div>
+
+                <div class="step_item {if $team_info.team_status eq 1} step_item_on{/if}">
+
+                    <div class="step_num">3</div>
+
+                    <div class="step_detail">
+
+                        <p class="step_tit">等待好友
+
+                            <br>参团支付</p>
+
+                    </div>
+
+                </div>
+
+                <div class="step_item {if $team_info.team_status eq 2}step_item_on{/if}" >
+
+                    <div class="step_num">4</div>
+
+                    <div class="step_detail">
+
+                        <p class="step_tit">达到人数
+
+                            <br>团购成功</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+
+        <br>
+
+        <br>
+
+        <br>
+
+        <br>
+
+        <div class="H5_con fixopt" id="fixopt" style="display: block;">
+
+
+
+ 
+
+ 			<!--{if $team_info.team_status eq 2 ||  $team_info.team_status eq 3 ||  $team_info.team_status eq 4}-->
+
+            <div class="fixopt_item">
+
+                <a class="fixopt_btn bottomBtn" href="goods.php?goods_id={$team_info.goods_id}">我也开个团，点击回商品详情</a>
+
+            </div>
+
+            <!--{else}-->
+
+            
+
+             <!-- {if $is_team eq 1 } --> 
+
+            <div class="fixopt_item fixopt_item1">
+
+                <a class="fixopt_home" href="index.php" ></a>
+
+                <a class="fixopt_share" id="share_button" href="javascript:void(0);" onclick="document.getElementById('share_img').style.display='';"></a>
+
+                <a class="fixopt_btn" href="javascript:void(0);" onclick="addToCart({$team_info.extension_id},0,0,5,{$team_info.team_sign});">我也要参团</a>
+
+            </div>
+
+            <!-- {else} -->
+
+            <div class="fixopt_item fixopt_item2">
+
+                <a class="fixopt_home" href="index.php" ></a>
+
+                <a class="fixopt_btn"  id="share_button" href="javascript:void(0);" onclick="document.getElementById('share_img').style.display='';">还差{$d_num}人组团成功</a>
+
+            </div>
+
+           <!-- {/if} -->
+
+            
+
+            <!--{/if}-->
+
+        
+
+        
+
+        </div>
+
+
+
+</div>
+
+
+
+<div id="share_img" class="share_img"{if $is_team eq 1 or $team_info.team_status neq 1} style="display:none;"{/if} onclick="document.getElementById('share_img').style.display='none';">
+
+    <p><img class="arrow" src="themes/haohaios/images/share.png" ></p>
+
+    <p style="margin-top:20px; margin-right:50px;">点击右上角，</p>
+    <p style="margin-right:50px;">将它分享给好友</p>
+
+    <p style=" text-align:center; font-size:30px; line-height:80px;">参团人数+1</p>
+
+    <p align="center">还差{$d_num}人就能组团成功</p>
+
+    <p align="center">快邀请小伙伴参团吧</p>
+
+</div>
+
+<a class="explain_tuan" id="share_button" href="javascript:void(0);" onclick="document.getElementById('share_tuan').style.display='';"></a>
+<div id="share_tuan" style="position:fixed;top:0;left:0;z-index:999;display:none; background:#fff;width:100%;height:100%; overflow-y:scroll; text-align:right; " onclick="document.getElementById('share_tuan').style.display='none';"><img src="themes/haohaios/images/share-tuan.png" ></div>
+
+</body>
+
+<script type="text/javascript">
+
+{foreach from=$lang.clips_js item=item key=key}
+
+var {$key} = "{$item}";
+
+{/foreach}
+
+<!--{if $team_info.team_status eq 1}-->
+
+var daysms = 24 * 60 * 60 * 1000;
+
+var hoursms = 60 * 60 * 1000;
+
+var Secondms = 60 * 1000;
+
+var microsecond = 1000;
+
+var DifferHour = 0;
+
+var DifferMinute = 0;
+
+var DifferSecond = 0;
+
+	
+
+var systime={$systime};
+
+var team_start={$team_start}*1000;
+
+var team_end={$team_start}*1000+{$team_suc_time}*24*3600*1000;
+
+setInterval("systime_clock()",1000);
+
+function systime_clock(){
+
+	systime++;
+
+}
+
+
+
+function clock()
+
+{	
+
+	//当前时间
+
+  var time = new Date();
+
+  time.setTime(systime*1000);
+
+
+
+  var Diffms = team_end - time.getTime();
+
+  var Diffms1=Diffms;
+
+  var a='';
+
+  var b='';
+
+  var c='';
+
+  var d='';
+
+  DifferHour = Math.floor(Diffms / daysms);
+
+  Diffms -= DifferHour * daysms;
+
+  DifferMinute = Math.floor(Diffms / hoursms);
+
+  Diffms -= DifferMinute * hoursms;
+
+  DifferSecond = Math.floor(Diffms / Secondms);
+
+  Diffms -= DifferSecond * Secondms;
+
+  var dShhs = Math.floor(Diffms / microsecond);
+
+  if(Diffms1>=0){
+
+	   a="还剩<strong class='tcd-h'>"+DifferHour+"</strong>天";
+
+	   b="<span >"+DifferMinute+"</span>时";
+
+	   c="<span >"+DifferSecond+"</span>分";
+
+	   d="<span>"+dShhs+"</span>秒";
+
+	  document.getElementById('time').innerHTML =a+b+c+d;
+
+	 
+
+  }else{//已结束
+
+  /*
+
+	  document.getElementById('handler').innerHTML="<button type='button' onclick='window.location=\'group.php\';'>我也要开个团，点此到商品列表</button>";
+
+	  
+
+	   document.getElementById('flag_0_a').style.display ="none";
+
+	   document.getElementById('flag_0_b').style.display ="none";*/
+
+	  window.location.reload();
+
+  }
+
+}
+
+ 
+
+window.setInterval("clock()", 1000); 
+
+<!-- {/if} -->
+
+function changeAtt(t) {
+t.lastChild.checked='checked';
+for (var i = 0; i<t.parentNode.childNodes.length;i++) {
+        if (t.parentNode.childNodes[i].className == 'cattsel') {
+            t.parentNode.childNodes[i].className = '';
+        }
+    }
+t.className = "cattsel";
+}
+
+</script>
+
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+	<script language="javascript" type="text/javascript">
+
+	wx.config({
+
+	    debug: false,//这里是开启测试，如果设置为true，则打开每个步骤，都会有提示，是否成功或者失败
+
+	    appId: '{$appid}',
+
+	    timestamp: '{$timestamp}',//这个一定要与上面的php代码里的一样。
+
+	    nonceStr: '{$timestamp}',//这个一定要与上面的php代码里的一样。
+
+	    signature: '{$signature}',
+
+	    jsApiList: [
+
+	      // 所有要调用的 API 都要加到这个列表中
+
+	        'onMenuShareTimeline',
+
+	        'onMenuShareAppMessage',
+
+	        'onMenuShareQQ',
+
+	        'onMenuShareWeibo'
+
+	    ]
+
+	});
+
+	var title="{$title}";
+
+	var link= "{$link}";
+
+	var imgUrl="{$imgUrl}";
+
+	var desc= "{$desc}";
+
+	wx.ready(function () {
+
+	    wx.onMenuShareTimeline({//朋友圈
+
+	        title: title, // 分享标题
+
+	        link: link, // 分享链接
+
+	        imgUrl: imgUrl, // 分享图标
+
+	        success: function () { 
+
+	            // 用户确认分享后执行的回调函数
+
+	        	statis(2,1);
+
+	        },
+
+	        cancel: function () { 
+
+	            // 用户取消分享后执行的回调函数
+
+	        	statis(2,2);
+
+	        }
+
+	    });
+
+	    wx.onMenuShareAppMessage({//好友
+
+	        title: title, // 分享标题
+
+	        desc: desc, // 
+
+	        link: link, // 分享链接
+
+	        imgUrl: imgUrl, // 分享图标
+
+	        type: '', // 分享类型,music、video或link，不填默认为link
+
+	        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+
+	        success: function () { 
+
+	        	// 用户确认分享后执行的回调函数
+
+	            statis(1,1);    
+
+	        },
+
+	        cancel: function () { 
+
+	            // 用户取消分享后执行的回调函数
+
+	        	statis(1,2);
+
+	        }
+
+	    });
+
+	  
+
+	    wx.onMenuShareQQ({
+
+	        title: title, // 分享标题
+
+	        desc: desc, // 分享描述
+
+	        link: link, // 分享链接
+
+	        imgUrl: imgUrl, // 分享图标
+
+	        success: function () { 
+
+	           // 用户确认分享后执行的回调函数
+
+	        	statis(4,1);
+
+	        },
+
+	        cancel: function () { 
+
+	           // 用户取消分享后执行的回调函数
+
+	        	statis(4,2);
+
+	        }
+
+	    });
+
+	    wx.onMenuShareWeibo({
+
+	        title: title, // 分享标题
+
+	        desc: desc, // 分享描述
+
+	        link: link, // 分享链接
+
+	        imgUrl: imgUrl, // 分享图标
+
+	        success: function () { 
+
+	           // 用户确认分享后执行的回调函数
+
+	        	statis(3,1);
+
+	        },
+
+	        cancel: function () { 
+
+	            // 用户取消分享后执行的回调函数
+
+	        	statis(3,2);
+
+	        }
+
+	    });
+
+	});
+
+	
+
+	function statis(share_type,share_status){
+
+		$.ajax({
+
+            type:"post",//请求类型
+
+            url:"share.php",//服务器页面地址
+
+            data:"act=link&share_status="+share_status+"&share_type="+share_type+"&link_url={$link2}",
+
+            dataType:"json",//服务器返回结果类型(可有可无)
+
+            error:function(){//错误处理函数(可有可无)
+
+                //alert("ajax出错啦");
+
+            },
+
+            success:function(data){
+
+                
+
+            }
+
+        });
+
+	}
+
+	</script>
+
+</html>
+

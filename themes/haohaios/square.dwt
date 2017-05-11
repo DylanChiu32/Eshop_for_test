@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/style.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/square.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
+{insert_scripts files='jquery.js,haohaios.js'}
+</head>
+<body id="square">
+<div class="container" style="background:#fff;">
+    <div class="fabu_s">
+        <form action="" class="form">
+            <select class="fabu_select" name="orderby">
+                <option value="news">最新</option>
+                <option value="hot">热门</option>
+            </select>
+            <input name="keywords" type="text" class="input_text" placeholder="  搜索产品名看他们说" value="{$keywords}">
+            <input type="submit" value="搜索" class="input_submit"/>
+        </form>
+        <a href="user.php?act=team_list&composite_status=100" class="fabu">发布</a>
+    </div>
+    <div class="square_list">
+    {foreach from=$goods_list item=goods}
+        <dl>
+            <dt><img src="{$goods.headimgurl}"><p>{$goods.uname}</p></dt>
+            <dd>
+                <p>{$goods.add_time}</p>
+                <p class="mess">{$goods.square}</p>
+                <p class="img">
+                    {foreach from=$goods.gallery item=gallery}
+                    <img src="{$gallery.thumb_url}">
+                    {/foreach}
+                </p>
+                <p class="gdname">{$goods.goods_name}</p>
+                <p class="gray">已有 {$goods.buy_nums} 位参团购买该产品</p>
+                <div class="square_g_core">
+                <a  onclick="addToCart({$goods.goods_id},0,0,5,{$goods.team_id});">
+                    <div class="square_g_core_img"><img src="themes/haohaios/images/tuan_g_core-4935ae4c83.png"></div>
+                    <div class="square_g_price">
+                        <!--span>{$goods.team_num}人团</span-->
+                        <b>¥{$goods.team_price}</b>
+                    </div>
+                    <div class="square_g_btn"><span>缺{$goods.need}人</span>去参团</div></a>
+                </div>
+            </dd>
+        </dl>
+    {foreachelse}
+        <div class="nothing">还没有小伙伴发布哦</div>
+    {/foreach}
+    </div>
+</div>
+<div class="blank"></div>
+
+<!-- #BeginLibraryItem "/library/footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+</html>

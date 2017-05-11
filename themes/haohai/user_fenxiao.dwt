@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/style.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
+{insert_scripts files='jquery.js,haohaios.js,user.js'}
+</head>
+<body>
+<div class="container">
+<!-- {if $action eq 'fenxiao'} -->
+    <div class="my">
+        <div class="my_head">
+            <div class="my_head_pic">
+                <img class="my_head_img" width="130" height="130" src="{$info.headimgurl}">
+            </div>
+            <div class="my_head_info">
+                <h4 class="my_head_name">{$info.user_name}<br/>分销中心</h4>
+            </div>
+        </div>
+    </div>
+    <div class="fx_nav">
+        <dl>
+            <dt><i class="fx fa fa-sitemap"></i>分销中心</dt>
+            <dd>
+                <!-- <p onclick="window.location='myshop.php?u=0';">我的店铺</p> -->
+                <a href="sharecode.php"><p style="color:#666;">分销推广海报</p></a>
+                <!-- <p onclick="javascript:;showCode();">专属二维码</p> -->
+            </dd>
+        </dl>
+        <dl>
+            <dt><i class="my fa fa-user-md"></i>我的盟友<span>{$all_nums}人</span></dt>
+            <dd>
+                <p onclick="window.location='user.php?act=level&level=1';">一级盟友<span>{$level1_nums}人</span></p>
+                <p onclick="window.location='user.php?act=level&level=2';">二级盟友<span>{$level2_nums}人</span></p>
+                <p onclick="window.location='user.php?act=level&level=3';">三级盟友<span>{$level3_nums}人</span></p>
+            </dd>
+        </dl>
+        <dl>
+            <dt><i class="jj fa fa-money"></i>我的佣金<span>¥{$checkedAmount}</span></dt>
+            <dd>
+                <p onclick="window.location='user.php?act=money';">分销订单<span>{$record_count}个</span></p>
+                <p onclick="window.location='user.php?act=moneycheck';">佣金明细<span>¥{$checkedAmount}</span></p>
+            </dd>
+        </dl>
+    </div>
+</div>
+<div class="blank"></div>
+<div class="footer">
+
+    <ul>
+
+        <li><a href="index.php"><i class="ico_index"></i>首页</a></li>
+        
+        <li><a href="tuan.php"><i class="ico_tuan"></i>拼团</a></li>
+
+		<li><a href="mall.php"><i class="ico_mall"></i>商城</a></li>
+
+        <li><a href="square.php"><i class="ico_square"></i>广场</a></li>
+
+        <li><a href="user.php" class="active"><i class="ico_user"></i>个人中心</a></li>
+
+    </ul>
+
+</div>>
+<!-- {/if} -->
+<div id="qr_code" class="qr_code" style="display:none;" onclick="document.getElementById('qr_code').style.display='none';">
+    <div class="qrcode_bg"></div>
+    <div class="qrcode"><img src="/qrcode.php"></div>
+</div>
+
+<script>
+function showCode(){
+    document.getElementById('qr_code').style.display='';
+}
+</script>
+</body>
+</html>
+

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/style.css" rel="stylesheet" />
+{insert_scripts files='zepto.min.js'}
+</head>
+<body class="yhq">
+<div class="container">
+    <div class="yhq_list">
+        {foreach from=$quan_list item=item name=name}
+        <div class="stamp stamp0{$item.stamp}" data-bid="{$item.type_id}">
+            <div class="par"><p><font>{$item.suppliers_name}</font></p><sub>￥</sub><span>{$item.type_money}</span><sub>优惠券</sub><p>订单满￥{$item.min_goods_amount}元可用</p></div>
+            <div class="copy">副券<p>{$item.use_start_date}<br>{$item.use_end_date}</p><a>立即领取</a></div>
+            <i></i>
+        </div>
+        {/foreach}
+    </div>
+</div>
+<div class="blank"></div>
+<div class="footer">
+
+    <ul>
+
+        <li><a href="index.php"><i class="ico_index"></i>首页</a></li>
+        
+        <li><a href="tuan.php"><i class="ico_tuan"></i>拼团</a></li>
+
+		<li><a href="mall.php"><i class="ico_mall"></i>商城</a></li>
+
+        <li><a href="square.php"><i class="ico_square"></i>广场</a></li>
+
+        <li><a href="user.php"><i class="ico_user"></i>个人中心</a></li>
+
+    </ul>
+
+</div>
+<script>
+$(document).ready(function() {
+    $('.stamp').click(function(event) {
+        var bid = $(this).data('bid');
+        getquan(bid);
+    });
+});
+    function getquan(bid){
+        $.ajax({
+            url: 'yhq.php?act=getquan',
+            type: 'GET',
+            dataType: 'json',
+            data: {bid:bid},
+            success: function(res){
+                var text = res.error ? res.message : res.content ;
+                alert(text);
+            }
+        })
+        
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+
+<div class="footer">
+
+    <ul>
+
+        <li><a href="index.php" class="nav-controller active"><i class="ico_index"></i>首页</a></li>
+        
+        <li><a href="tuan.php" class="nav-controller"><i class="ico_tuan"></i>拼团</a></li>
+
+		<li><a href="mall.php" class="nav-controller"><i class="ico_mall"></i>商城</a></li>
+
+        <li><a href="square.php" class="nav-controller"><i class="ico_square"></i>广场</a></li>
+
+        <li><a href="user.php"  class="nav-controller"><i class="ico_user"></i>个人中心</a></li>
+
+    </ul>
+
+</div>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/style.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
+{insert_scripts files='jquery.js,haohaios.js'}
+</head>
+<body >
+<div class="container">
+    <div class="newu_tad">
+        {foreach from=get_advlist_position_name('新人专属banner',1) item=ad name=index_image}
+        <img src="{$ad.image}"/>
+        {/foreach}
+    </div>
+    <div class="newu_hot">
+        <ul>
+            <li><a href="qhb.php"><img src="images/qhb.png"></a></li>
+            <li><a href="yhq.php"><img src="images/qyh.png"></a></li>
+        </ul>
+    </div>
+    <div class="blank"></div>
+    <div class="good_list">
+        <h2><a href="#">新人专享</a><span></span></h2>
+        <ul class="list_B">
+            <!--{foreach name=goods_list from=$goods_list item=goods}-->
+            <li class="list_B_li_new">
+                <a href="{$goods.url}&uid={$uid}"><img src="{$goods.goods_thumb}"></a>
+                <p class="tit"><a href="{$goods.url}&uid={$uid}">{$goods.goods_name}</a></p>
+                <p class="brief">{$goods.goods_brief}</p>
+                <p class="list_B_p"><del class="del_new del_new2">¥{$goods.market_price}</del><font class="price price_new2 price_new_2">¥<b>{$goods.shop_price}</b></font></p>
+                <img class="tuan_g_bottom" src="themes/haohai/images/shade.png" />
+            </li>
+            <!--{/foreach}-->
+        </ul>
+    </div>
+    <div class="blank"></div>
+    <div class="good_list">
+        <h2><a href="#">互动游戏</a><span></span></h2>
+        <div class="games">
+            <p></p>
+        </div>
+    </div>
+</div>
+<div class="blank"></div>
+<div class="footer">
+
+    <ul>
+
+        <li><a href="index.php"><i class="ico_index"></i>首页</a></li>
+        
+        <li><a href="tuan.php"><i class="ico_tuan"></i>拼团</a></li>
+
+		<li><a href="mall.php"><i class="ico_mall"></i>商城</a></li>
+
+        <li><a href="square.php"><i class="ico_square"></i>广场</a></li>
+
+        <li><a href="user.php"><i class="ico_user"></i>个人中心</a></li>
+
+    </ul>
+
+</div></body>
+</html>

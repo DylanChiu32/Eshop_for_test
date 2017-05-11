@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/style.css" rel="stylesheet" />
+{insert_scripts files='jquery.js,haohaios.js,jquery.lazyload.js'}
+</head>
+<body>
+<div class="container">
+    <div class="top_search">
+        <form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()">
+            <input name="keywords" id="keyword" type="text" class="text" value="{$search_keywords|escape}" placeholder="商品搜索">
+            <input type="submit" value="搜索" class="submit" />
+            <input type="hidden" name="search_type" value="is_mall">
+        </form>
+    </div>
+    <div class="top_nav">
+        <ul class="sort">
+            <li><a href="mall.php?sort=sort_order&uid={$uid}" {if $sort eq 'sort_order'}class="cur"{/if}>综合</a></li>
+            <li><a href="mall.php?sort=click_count&cid={$cat_id}&uid={$uid}" {if $sort eq 'click_count'}class="cur"{/if}>人气</a></li>
+            <li><a href="mall.php?sort=sales_num&cid={$cat_id}&uid={$uid}" {if $sort eq 'sales_num'}class="cur"{/if}>销量</a></li>
+            <li><a href="mall.php?sort=shop_price&cid={$cat_id}&uid={$uid}" {if $sort eq 'shop_price'}class="cur"{/if}>价格</a></li>
+        </ul>
+        <ul class="menu">
+            <li><a href="mall.php?sort=sort_order&uid={$uid}" {if $cat_id eq 0}class="cur"{/if}>全部</a></li>
+            {foreach from=$categories item=cat}
+            <li><a href="mall.php?cid={$cat.id}&sort={$sort}&uid={$uid}" {if $cat_id eq $cat.id}class="cur"{/if}>{$cat.name}</a></li>
+            {/foreach}
+        </ul>
+    </div>
+    <div class="blank"></div>
+    <div class="good_list" style="background:#fff;">
+        <div class="blank"></div>
+        <ul class="list_B">
+            <!--{foreach from=$goods_list item=goods}-->
+            <li class="list_B_li_new">
+                <a href="{if $goods.goods_number gt 0}{$goods.url}&uid={$uid}{else}javascript:void(0);{/if}"><img goods_id="{$goods.goods_id}" data-original="{$goods.goods_thumb}" src="images/loading.gif" class="lazy"></a>
+                <p class="tit"><a href="{$goods.url}&uid={$uid}">{$goods.goods_name}</a></p>
+                <p class="brief">{$goods.goods_brief}</p>
+                <p class="tuan_g_core tuan_g_core_p1"><font class="price price_new2 price_new_2">¥<b>{$goods.shop_price}</b></font><del class="del_new del_new2">¥{$goods.market_price}</del></p>
+                <div style="float:right;width:17%;">
+                    {if $goods.goods_number > 0}
+                     {if $goods.attr}
+                     <a class="buy1 iproduct_{$goods.goods_id}" href="javascript:addToCart({$goods.goods_id},0,1,0,0,1)"></a>
+                     {else}
+                     <a class="buy1" id="iproduct_{$goods.goods_id}"></a>
+                     {/if}
+                     {else}
+                     <a class="buy1 hui" href="javascript:alert('库存不足')"></a>
+                   {/if}
+                </div>
+                <img class="tuan_g_bottom" src="themes/haohai/images/shade.png" />
+            </li>
+            <!--{/foreach}-->
+        </ul>
+    </div>
+    <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+</div>
+<a href="flows.php?step=cart" class="gw-cart-p" id="cat"><i class="iconfont-cart"></i>
+    <span id="HHS_CARTINFO" class="gw-cart">{insert name='cart_num'}</span>
+</a>
+<div class="blank"></div>
+<div class="footer">
+
+    <ul>
+
+        <li><a href="index.php"><i class="ico_index"></i>首页</a></li>
+        
+        <li><a href="tuan.php"><i class="ico_tuan"></i>拼团</a></li>
+
+		<li><a href="mall.php" class="active"><i class="ico_mall"></i>商城</a></li>
+
+        <li><a href="square.php"><i class="ico_square"></i>广场</a></li>
+
+        <li><a href="user.php"><i class="ico_user"></i>个人中心</a></li>
+
+    </ul>
+
+</div>
+
+
+
+<script>
+	window.onload=function(){
+		$("img.lazy").lazyload({
+                effect: "fadeIn",
+                threshold : 200
+        });
+        $("img.lazy:eq(0)").attr('src',$("img.lazy:eq(0)").attr('data-original'));
+	}
+var btn_buy = "{$lang.btn_buy}";
+var btn_add_to_cart = "{$lang.btn_add_to_cart}";
+var is_cancel = "{$lang.is_cancel}";
+var select_spe = "{$lang.select_spe}";
+</script>
+
+<script type="text/javascript">
+function getElementLeft(element){
+　　　　var actualLeft = element.offsetLeft;
+　　　　var current = element.offsetParent;
+        
+　　　　while ( current !== null ){
+　　　　　　actualLeft += current.offsetLeft;
+　　　　　　current = current.offsetParent;
+
+　　　　}
+
+　　　　return actualLeft;
+　　}
+
+function getElementTop(element){
+　　　　var actualTop = element.offsetTop;
+　　　　var current = element.offsetParent;
+
+　　　　while (current !== null){
+　　　　　　actualTop += current.offsetTop;
+　　　　　　current = current.offsetParent;
+　　　　}
+
+　　　　return actualTop;
+　　}　　
+
+    var Cart = {
+      id: 'cat',
+      addProduct: function(cpid, num, t ) {
+        //添加商品
+        var cat =document.getElementById('cat');  
+        var catLeft=getElementLeft(cat);
+        var catTop=getElementTop(cat);
+        var sTop=document.body.scrollTop+document.documentElement.scrollTop;
+
+        var op = $("[id=iproduct_"+cpid+"]").parents("li").find("img").first();
+        var goods_id = $(op).attr("goods_id");
+
+        if(op.length>0) {
+            var np = op.clone().css({"position":"absolute", "top": op.offset().top, "left": op.offset().left, width: 50, height:50, "z-index": 999999999}).show();
+            np.appendTo("body").animate({top:  catTop + sTop , left: $("#cat").offset().left +30 , width: 20, height:20}, {duration: 1000,
+                    callback:function(){}, complete: function(){np.remove();addToCart(goods_id,0,1 ,0,0,1 );} });
+        }
+       }
+    }
+
+    $(function() {
+        $('[id^=iproduct_]').click(function() {
+            var id = $(this).attr("id");
+            var tmp = id.split('_');
+            var goods_id = tmp[1];
+
+            //var cpid = this.id.replace('iproduct_'+goods_id,goods_id);
+
+             Cart.addProduct(goods_id, 1, 0  );
+
+            return false;
+        });
+     });
+</script>
+</body>
+</html>
+

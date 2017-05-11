@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/style.css" rel="stylesheet" />
+{insert_scripts files='jquery.js,haohaios.js,jquery.lazyload.js'}
+</head>
+<body>
+<div class="container">
+    <div class="top_search">
+        <form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()">
+            <input name="keywords" id="keyword" type="text" class="text" value="{$search_keywords|escape}" placeholder="商品搜索">
+            <input type="submit" value="搜索" class="submit submit_new" />
+            <input type="hidden" name="search_type" value="is_team">
+        </form>
+    </div>
+    <div class="top_nav">
+        <ul class="sort">
+            <li><a href="tuan.php?sort=sort_order&uid={$uid}" {if $sort eq 'sort_order'}class="cur"{/if}>综合</a></li>
+            <li><a href="tuan.php?sort=click_count&cid={$cat_id}&uid={$uid}" {if $sort eq 'click_count'}class="cur"{/if}>人气</a></li>
+            <li><a href="tuan.php?sort=sales_num&cid={$cat_id}&uid={$uid}" {if $sort eq 'sales_num'}class="cur"{/if}>销量</a></li>
+            <li><a href="tuan.php?sort=shop_price&cid={$cat_id}&uid={$uid}" {if $sort eq 'shop_price'}class="cur"{/if}>价格</a></li>
+        </ul>
+        <ul class="menu">
+            <li><a href="tuan.php?sort=sort_order&uid={$uid}" {if $cat_id eq 0}class="cur"{/if}>全部</a></li>
+            {foreach from=$categories item=cat}
+            <li><a href="tuan.php?cid={$cat.id}&uid={$uid}" {if $cat_id eq $cat.id}class="cur"{/if}>{$cat.name}</a></li>
+            {/foreach}
+        </ul>
+    </div>
+    <div class="good_list">
+        <div class="tuan_list" style="padding-top:10px;">
+        <!--{foreach from=$goods_list item=goods}-->
+        <!-- {if $goods.goods_id} -->
+        <div class="tuan_g">
+            <a href="{if $goods.goods_number gt 0}{$goods.url}&uid={$uid}{else}javascript:void(0);{/if}">
+                <div class="tuan_g_img">
+					<img data-original="{$goods.little_img}" src="images/loading.gif" class="lazy">
+                    {if $goods.goods_number lt 1}
+                    <span class="sell_f"></span>
+                    {/if}
+                    <span class="tuan_mark">
+                        <b>{$goods.team_discount}折</b>
+                        <span>{$goods.team_num}人团</span>
+                    </span>
+                </div>
+                <div class="tuan_g_info">
+                    <p class="tuan_g_name">{$goods.goods_name}</p>
+                    <p class="tuan_g_cx">{$goods.goods_brief}</p>
+                </div>
+            </a>
+                <div class="tuan_g_core">
+                    <!--<div class="tuan_g_mprice">
+                        <del>市场价：¥{$goods.market_price}</del>
+                    </div>-->
+                    <!--div class="tuan_g_num">{$goods.team_num}人团</div>
+                    <div class="tuan_g_price">
+                        <b class="tuan_g_num_b">¥{$goods.team_price}</b>
+                    </div>
+                    <div class="tuan_g_btn">立即开团</div-->
+                    <a class="tuan_g_core_a" href="{if $goods.goods_number gt 0}{$goods.url}&uid={$uid}{else}javascript:void(0);{/if}">
+                        <div class="pt-price">
+                            拼团价
+                            <b class="tuan_g_num_b">¥{$goods.team_price}</b>
+                        </div>
+                    </a>
+                    <a class="tuan_g_core_a" href="{if $goods.goods_number gt 0}{$goods.url}&uid={$uid}&alone=1{else}javascript:void(0);{/if}">
+                        <div class="alone-price">
+                            单独购
+                            <b class="tuan_g_num_b">¥{$goods.shop_price}</b>
+                        </div>
+                    </a>
+                </div>
+        </div>
+        <img class="tuan_g_bottom" src="../images/shade.png" />
+        <!--{/if}-->
+        <!--{/foreach}-->
+        </div>
+    </div>
+    <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+</div>
+<div class="blank"></div>
+<div class="footer">
+
+    <ul>
+
+        <li><a href="index.php"><i class="ico_index"></i>首页</a></li>
+        
+        <li><a href="tuan.php" class="active"><i class="ico_tuan"></i>拼团</a></li>
+
+		<li><a href="mall.php"><i class="ico_mall"></i>商城</a></li>
+
+        <li><a href="square.php"><i class="ico_square"></i>广场</a></li>
+
+        <li><a href="user.php"><i class="ico_user"></i>个人中心</a></li>
+
+    </ul>
+
+</div>
+<script>
+	window.onload=function(){
+		$("img.lazy").lazyload({
+                effect: "fadeIn",
+                threshold : 200
+        });
+        $("img.lazy:eq(0)").attr('src',$("img.lazy:eq(0)").attr('data-original'));
+	}
+</script>
+
+<script type="text/javascript">
+        //页面载入 搜索按钮动画
+        $(document).ready(function(){
+            $(".submit_new").animate({
+                    marginRight:"42px"
+                }, 1000);
+        });
+    </script>
+</body>
+</html>
+

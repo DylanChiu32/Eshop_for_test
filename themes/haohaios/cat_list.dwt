@@ -1,0 +1,41 @@
+{foreach from=$arr item=category key=key name=name}
+	    <dl id="c_{$key}"{if $smarty.foreach.name.index neq 0} style="display:none;"{/if}>
+		    {foreach from=$category item=cat }
+			{if $cat.is_level}
+            {foreach from=$cat.cat_id item=cat_two }
+		    <dt><a href="mall.php?cid={$cat_two.id}">{$cat_two.name}</a></dt>
+			<dd>
+			    {foreach from=$cat_two.cat_id item=cat_three }
+			    <a href="mall.php?cid={$cat_three.id}"><img src="{if $cat_three.cat_img}{$site_url}{$cat_three.cat_img}{else}{$site_url}images/no_picture.gif{/if}"><span>{$cat_three.name}</span></a>
+				{/foreach}
+			</dd>
+			{/foreach}
+			{else}
+			<dt><a href="mall.php?cid={$cat.id}">{$cat.name}</a></dt>
+			<dd>
+			    {foreach from=$cat.cat_id item=cat_two name=cat_two}
+				<a href="mall.php?cid={$cat_two.id}"><img src="{if $cat_two.cat_img}{$site_url}{$cat_two.cat_img}{else}{$site_url}images/no_picture.gif{/if}"><span>{$cat_two.name}</span></a>
+				{/foreach}
+			</dd>
+			{/if}
+			{/foreach}
+     {foreach from=$category item=cat }       
+    <div class="brand_list">
+        <h3>热门品牌</h3>
+        <ul>
+        {foreach from=$cat.brands item=brands }
+        <li>
+            <a href="{$brands.url}">
+                {if $brands.brand_logo}
+                <img src="data/brandlogo/{$brands.brand_logo}" alt="{$brands.brand_name}" />
+                {else}
+                <p>{$brands.brand_name}</p>
+                {/if}
+            </a>
+        </li>
+		{/foreach}
+    </div>
+    {/foreach}
+
+		</dl>
+{/foreach}

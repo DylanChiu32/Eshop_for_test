@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/style.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
+{insert_scripts files='jquery.js,haohaios.js,user.js'}
+</head>
+<body>
+
+<div class="container">
+    <!-- {if $action eq 'money'} -->
+    <div class="fx_money">
+        <h3><i class="my fa fa-sitemap"></i>分销订单</h3>
+        <table width="100%" border="0" cellspacing="1" cellpadding="0" class="list_table">
+            <tr>
+                <td class="order-num-new">订单号</td>
+                <td class="order-price-new">商品价格</td>
+                <td class="order-money-new">佣金</td>
+                <td class="order-vip-new">消费会员</td>
+                <td class="order-staus-new">结算状态</td>
+            </tr>
+                <!-- {foreach from=$moneyList item=item} -->
+            <tr>
+                <td class="order-num-new">{$item.order_sn}</td>
+                <td class="order-price-new">{$item.amount}</td>
+                <td class="order-money-new">{$item.money}</td>
+                <td class="order-vip-new">{$item.user_name}</td>
+                <td class="order-staus-new">{if $item.update_at}{$item.update_at}{else}未结算/无效{/if}</td>
+            </tr>
+                <!-- {/foreach} -->
+        </table>
+    </div>
+    <!-- {/if} -->
+    <!-- {if $action eq 'moneycheck'} -->
+    <div class="nav_fixed">
+        <a href="user.php?act=moneycheck"{if $checked eq ''} class="cur"{/if}>全部佣金</a>
+        <a href="user.php?act=moneycheck&checked=1"{if $checked eq 1 } class="cur"{/if}>已结算</a>
+        <a href="user.php?act=moneycheck&checked=2"{if $checked eq 2 } class="cur"{/if}>未结算</a>
+    </div>
+    <div class="fx_money" style="padding-top:40px;">
+        <h3><i class="my fa fa-money"></i>佣金明细<a href="user.php?act=account_raply">提现</a></h3> 
+        <table width="100%" border="0" cellspacing="1" cellpadding="0" class="list_table">
+            <tr>
+                <td>订单号</td>
+                <td>分销等级</td>
+                <td>佣金</td>
+                <td>消费会员</td>
+                <td>结算状态</td>
+            </tr>
+            <!-- {foreach from=$moneyList item=item} -->
+            <tr>
+                <td>{$item.order_sn}</td>
+                <td>{$item.level}</td>
+                <td>{$item.money}</td>
+                <td>{$item.user_name}</td>
+                <td>{if $item.update_at}{$item.update_at}{else}未结算/无效{/if}</td>
+            </tr>  
+            <!-- {/foreach} -->
+        </table>
+    </div>
+    <!-- {/if} -->
+    <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+</div>
+<div class="blank"></div>
+<div class="footer">
+
+    <ul>
+
+        <li><a href="index.php"><i class="ico_index"></i>首页</a></li>
+        
+        <li><a href="tuan.php"><i class="ico_tuan"></i>拼团</a></li>
+
+		<li><a href="mall.php"><i class="ico_mall"></i>商城</a></li>
+
+        <li><a href="square.php"><i class="ico_square"></i>广场</a></li>
+
+        <li><a href="user.php" class="active"><i class="ico_user"></i>个人中心</a></li>
+
+    </ul>
+
+</div>
+
+</body>
+</html>
+

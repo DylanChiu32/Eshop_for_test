@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/style.css" rel="stylesheet" />
+{insert_scripts files='jquery.js,haohaios.js,jquery.lazyload.js'}
+</head>
+<body >
+<div class="container">
+    <div class="rank_nav">
+        <a href="rank.php?act=hot" {if $act eq 'hot' }class="cur"{/if}>热门拼团</a>
+        <a href="rank.php?act=new" {if $act eq 'new' }class="cur"{/if}>热门精品</a>
+    </div>
+    <div class="blank4"></div>
+    <!-- {if $act eq 'hot' } -->
+    <div class="good_list">
+        <div class="tuan_list" style="padding-top:10px;">
+        <!--{foreach name=goods_list from=$goods_list item=goods}-->
+        <div class="tuan_g">
+            <a href="{if $goods.goods_number gt 0}{$goods.url}&uid={$uid}{else}javascript:void(0);{/if}">
+                <div class="tuan_g_img">
+					<img data-original="{$goods.little_img}" src="images/loading.gif" class="lazy">
+                    {if $goods.goods_number lt 1}
+                    <span class="sell_f"></span>
+                    {/if}
+                    <span class="tuan_mark">
+                        <b>{$goods.team_discount}折</b>
+                        <span>{$goods.team_num}人团</span>
+                    </span>
+                </div>
+                <div class="tuan_g_info">
+                    <p class="tuan_g_name">{$goods.goods_name}</p>
+                    <p class="tuan_g_cx">{$goods.goods_brief}</p>
+                </div>
+                <div class="tuan_g_core">
+                    <!--<div class="tuan_g_mprice">
+                        <del>市场价：¥{$goods.market_price}</del>
+                    </div>-->
+                    <div class="tuan_g_num">{$goods.team_num}人团</div>
+                    <div class="tuan_g_price">
+                        <b>¥{$goods.team_price}</b>
+                    </div>
+                    <div class="tuan_g_btn">去开团</div>
+                </div>
+            </a>
+        </div>
+        <!--{/foreach}-->
+        </div>
+    </div>
+    <!-- {/if} -->
+    <!-- {if $act eq 'new' } -->
+    <div class="good_list" style="background:#fff;">
+        <div class="blank"></div>
+        <ul class="list_B">
+            <!--{foreach name=goods_list from=$goods_list item=goods}-->
+            <li>
+                <a href="{if $goods.goods_number gt 0}{$goods.url}&uid={$uid}{else}javascript:void(0);{/if}"><img data-original="{$goods.goods_thumb}" src="images/loading.gif" class="lazy"></a>
+                <p class="tit"><a href="{$goods.url}&uid={$uid}">{$goods.goods_name}</a></p>
+                <p class="brief">{$goods.goods_brief}</p>
+                <p><del>¥{$goods.market_price}</del><font class="price">¥<b>{$goods.shop_price}</b></font></p>
+            </li>
+            <!--{/foreach}-->
+        </ul>
+    </div>
+    <!-- {/if} -->
+</div>
+<div class="blank"></div>
+<!-- #BeginLibraryItem "/library/footer.lbi" --><!-- #EndLibraryItem -->
+<script>
+	window.onload=function(){
+        $("img.lazy").lazyload({
+                effect: "fadeIn",
+                threshold : 200
+        });
+        $("img.lazy:eq(0)").attr('src',$("img.lazy:eq(0)").attr('data-original'));
+	}
+</script>
+</body>
+</html>
+

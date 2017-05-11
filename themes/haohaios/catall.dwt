@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>商品分类</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/style.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/catall.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
+{insert_scripts files='jquery.js,haohaios.js'}
+<script type="text/javascript">
+    var process_request = "{$lang.process_request}";
+    function checkSearchForm()
+    {
+        if(document.getElementById('keyword').value)
+        {
+            return true;
+        }
+        else
+        {
+            alert("{$lang.no_keywords}");
+            return false;
+        }
+    }
+</script>
+</head>
+<body id='mall' class="catall">
+<div class="classification">
+	<div class="searchbox">
+		<div class="search">
+		    <form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()">
+			<input type="search" name="keywords" id="keyword" style="max-width:90%" class="ud" placeholder="搜索商品" required>
+			<input type="submit" value="" class="submit" />
+			</form>
+		</div>
+	</div>
+	<div class="leftmenu">
+		<ul id="cat_menu">
+		    {foreach from=$pcat_array item=category name=category name=category}
+			<li id="cat_{$category.id}"{if $smarty.foreach.category.index eq 0} class="cur"{/if} onClick="return changeCat({$category.id})">{$category.name}</li>
+			{/foreach}
+		</ul>
+	</div>
+	<div id="cat_list" class="content">
+	    {include file='cat_list.dwt'}
+	</div>
+</div>
+<!-- #BeginLibraryItem "/library/footer.lbi" --><!-- #EndLibraryItem -->
+<script>
+function changeCat(cat_id)
+{
+    $("#cat_menu li").attr("class","");
+	$("#cat_"+cat_id).attr("class","cur");
+	$("#cat_list dl").hide();
+	$("#c_"+cat_id).show();
+}	
+</script>
+</body>
+</html>

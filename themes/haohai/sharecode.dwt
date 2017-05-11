@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<meta name="Keywords" content="{$keywords}" />
+	<meta name="Description" content="{$description}" />
+	<title>专属二维码</title>
+	<script src="/js/jquery.js"></script>
+	<link href="{$hhs_css_path}/style.css" rel="stylesheet" />
+</head>
+<body style="padding-bottom: 20px;">
+<div id="share">
+	<img src="{if $exist eq 1}{$file_name}{else}{/if}" alt="">
+</div>
+<form id="form">
+	<input type="text" name="text" placeholder="专属标语" class="share_text_new" />
+	<p class="share_p_new">重新生成海报</p>
+	<div class="button_new">
+		
+		<input type="radio" name="force" id="ok" value="1" style="display: none;" />
+		<label for="ok" class="ok_new"></label>是
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		
+		<input type="radio" name="force" id="no" value="0" checked style="display: none;"/>
+		<label for="no" class="no_new"></label>否
+	</div>
+	<input type="button" value="确定" id="post" class="share_post_new">
+</form>
+<script>
+	$(function() {
+		$("#post").click(function(event) {
+			/* Act on the event */
+			$.ajax({
+				url: 'sharecode.php?act=show',
+				type: 'POST',
+				dataType: 'json',
+				data: $("#form").serialize(),
+				success:function(res){
+					if (res.error > 0) {
+						alert(res.message);
+					}
+					else{
+						$("#share img").attr('src', res.content+'?t='+Math.random());
+						window.location.reload();
+					}
+				}
+			})			
+		});
+	});
+</script>
+</body>
+</html>

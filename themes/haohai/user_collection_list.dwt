@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/style.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
+{insert_scripts files='jquery.js,haohaios.js,user.js'}
+</head>
+<body>
+<div class="container">
+  {insert_scripts files='utils.js'}
+  <!--{if $action eq 'collection_list'} -->
+    <div class="rank_nav">
+        <a href="user.php?act=collection_list" {if $action eq 'collection_list' }class="cur"{/if}>商品收藏</a>
+        <a href="user.php?act=collect_store_list" {if $action eq 'collect_store_list' }class="cur"{/if}>店铺收藏</a>
+    </div>
+	<div class="blank4"></div>
+    <div class="collection">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <!--{foreach from=$goods_list item=goods}-->
+          <tr>
+            <td><a href="{$goods.url}"><img src="{$goods.goods_thumb}" width="50"></a></td>
+            <td><a href="{$goods.url}">{$goods.goods_name|escape:html}</a></td>
+            <td><strong>¥{if $goods.promote_price neq ""}{$goods.promote_price}{else}{$goods.shop_price}{/if}</strong></td>
+            <td align="right" width="50">
+               <a href="javascript:if (confirm('{$lang.remove_collection_confirm}')) location.href='user.php?act=delete_collection&collection_id={$goods.rec_id}'" class="btn">{$lang.drop}</a>
+            </td>
+          </tr>
+          <!--{/foreach} -->
+        </table>
+    </div>
+	<!--{/if} -->
+	
+	<!--{if $action eq 'collect_store_list'} -->
+	<div class="rank_nav">
+        <a href="user.php?act=collection_list" {if $action eq 'collection_list' }class="cur"{/if}>商品收藏</a>
+        <a href="user.php?act=collect_store_list" {if $action eq 'collect_store_list' }class="cur"{/if}>店铺收藏</a>
+    </div>
+	<div class="blank4"></div>
+	<div class="collection">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <!--{foreach from=$store_list item=store}-->
+          <tr>
+            <td><a href="{$store.url}"><img src="{$store.logo}" width="50"></a></td>
+            <td><a href="{$store.url}">{$store.suppliers_name|escape:html}</a></td>
+            <td align="right" width="50">
+               <a href="javascript:if (confirm('确定要取消吗')) location.href='user.php?act=del_collect_store&id={$store.id}'" class="btn">{$lang.drop}</a>
+            </td>
+          </tr>
+          <!--{/foreach} -->
+        </table>
+	</div>	
+	<!--{/if} -->
+	
+    <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+</div>
+<div class="blank"></div>
+<div class="footer">
+
+    <ul>
+
+        <li><a href="index.php"><i class="ico_index"></i>首页</a></li>
+        
+        <li><a href="tuan.php"><i class="ico_tuan"></i>拼团</a></li>
+
+		<li><a href="mall.php"><i class="ico_mall"></i>商城</a></li>
+
+        <li><a href="square.php"><i class="ico_square"></i>广场</a></li>
+
+        <li><a href="user.php" class="active"><i class="ico_user"></i>个人中心</a></li>
+
+    </ul>
+
+</div>
+</body>
+</html>
+

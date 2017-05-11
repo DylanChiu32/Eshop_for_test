@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/haohaios.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
+{insert_scripts files='jquery.js,haohaios.js'}
+<script type="text/javascript">
+    var process_request = "{$lang.process_request}";
+    {literal}
+    <!--
+    function checkSearchForm()
+    {
+        if(document.getElementById('keyword').value)
+        {
+            return true;
+        }
+        else
+        {
+            alert("{$lang.no_keywords}");
+            return false;
+        }
+    }
+    -->
+    {/literal}
+</script>
+    <script language="javascript">
+		
+    function changeCat(cat_id)
+	{
+		//删除默认分类的样式，对选择的分类进行增加样式并且AXAJ查询子分类
+		//$(".curr_cat").attr("class","");
+		//$("#cat_"+cat_id).attr("class","curr_cat");
+		
+		$("#cat_t li").attr("class","");
+		$("#cat_"+cat_id).attr("class","curr_cat");
+		
+		$("#cat_list div.ab").hide();
+		$("#c_"+cat_id).show();
+		/*
+		$(".curr_cat").attr("class","");
+		$("#cat_"+cat_id).attr("class","curr_cat");
+		Ajax.call('changeCat.php?step=selectCat', 'cat_id='+cat_id, changeCatResponse, 'GET', 'JSON');		
+		*/
+	}
+		
+		
+	</script>
+</head>
+<body >
+<div class="container">
+    <div class="top_search">
+        <form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()">
+            <input name="keywords" id="keyword" type="text" class="text" value="{$search_keywords|escape}" maxlength="60" x-webkit-speech="" lang="zh-CN" onwebkitspeechchange="foo()" placeholder="请输入您要搜索的商品关键字" x-webkit-grammar="builtin:search" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
+            <input type="submit" value="搜索" class="submit" />
+        </form>
+    </div>
+
+	<div class="cat_title">
+    	<ul id="cat_t">
+        <!-- {foreach from=$pcat_array item=category name=category}-->
+		  <a href='javascript:void(0);' onClick="return changeCat({$category.id})">
+          <li id='cat_{$category.id}' {if $smarty.foreach.category.index eq 0}class="curr_cat"{/if}>{$category.name}</li>
+          </a>
+        <!--{/foreach}-->
+        </ul>
+    </div>
+    
+    <div class="cat_con">
+        <!-- 分类列表 AJAX 刷新整块-->
+        <div id='cat_list' class="cat_box">
+        {include file='cat_list.dwt'}
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

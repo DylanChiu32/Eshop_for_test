@@ -1,0 +1,21 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<a class="send_address" href="flow.php?step=address_list">
+    <div id="sendTo">
+        <div class="address_defalut">
+            <div class="bg"></div>
+            <h3><i class="fa fa-map-marker"></i></h3>
+            <ul id="editAddBtn">
+            {if $consignee}
+                <li>收货人：{$consignee.consignee}　{$consignee.mobile}</li>
+                <li>收货地址：{$consignee.region}{$consignee.address}</li>
+            {else}
+                <li>&nbsp;</li>
+                <li>请填写配送地址</li>
+            {/if}
+            </ul>
+            <input name="address_id" type="hidden" value="{if $consignee}{$consignee.address_id}{else}0{/if}" />
+            <div class="bg"></div>
+        </div>
+    </div>
+</a>

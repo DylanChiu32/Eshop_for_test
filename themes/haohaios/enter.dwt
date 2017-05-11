@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/style.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
+{* 包含脚本文件 *}
+{insert_scripts files='jquery.js,common.js,region.js,haohaios.js'}
+<script language="javascript">
+// what a fuck!!
+	function regs()
+	{
+		 var reg = /^[0-9]+/;
+		 var reg2 = /^1[345678]\d{9}$/;
+		
+			var suppliers_name =  $("#suppliers_name").val();
+			var address =  $("#address").val();
+			var real_name = $("#real_name").val();
+			var phone = $("#phone").val();
+			var user_name = $("#user_name").val();
+			var password = $("#password").val();
+			var password1 = $("#password1").val();
+			if(suppliers_name=='')
+			{
+				$("#suppliers_name_notice").html("请输入商家名称!");
+				return false;
+			}
+			else if(suppliers_name.length > 24)
+			{
+				$("#suppliers_name_notice").html("商家名称不能大于24个字符!");
+				return false;
+			}
+			
+			if(address=='')
+			{
+				$("#address_notice").html("请输入详细地址!");
+				return false;
+			}	
+
+
+			if(real_name=='')
+			{
+				$("#real_name_notice").html("请输入店长姓名!");
+				return false;
+			}
+			if(phone=='')
+			{
+				$("#qq_notice").html("请输入店长手机号码!");
+				return false;
+			}
+			else if(!reg2.test(phone))
+			{
+				$("#phone_notice").html("请输入正确店长手机号码!");
+				return false;
+			}
+			if(user_name=='')
+			{
+				$("#phone_notice").html("请输入登录用户名!");
+				return false;
+			}
+			else
+			{
+				var result = Ajax.call('business/suppliers.php?act=check_user_name', 'user_name='+user_name, null, 'GET', 'JSON',false);
+				if(result.error ==1)
+				{
+					$("#user_name_notice").html("该用户名已被使用!");
+					return false;
+				}
+				else
+				{
+					$("#user_name_notice").html("");
+				}
+			}
+			if(password=='')
+			{
+				$("#password_notice").html("密码不能为空!");
+				return false;
+			}
+			else
+			{
+				$("#password_notice").html("");
+			}
+			if(password1=='')
+			{
+				$("#password1_notice").html("确认密码不能为空!");
+				return false;
+			}
+			else
+			{
+				if(password1!=password)
+				{
+					$("#password1_notice").html("俩次输入不一致!");
+					return false;
+				}
+				else
+				{
+					$("#password1_notice").html("");
+				}
+			}
+			$('#setp'+first).hide();
+			$('#setp'+second).show();
+	}
+	function check_suppliers_name(value)
+	{
+		if(value=='')	
+		{
+			$("#suppliers_name_notice").html("请输入商家名称!");
+		}
+		else
+		{
+			Ajax.call( 'enter.php?act=is_suppliers_name', 'suppliers_name=' + value, suppliers_name_callback , 'GET', 'TEXT', true, true );
+			//$("#suppliers_name_notice").html("");	
+		}
+	}
+	function suppliers_name_callback(result){
+		if(result==1){
+			$('#suppliers_name_notice').html('商家名称已存在');
+		}else{
+			$('#suppliers_name_notice').html('');
+		}
+	}
+	function check_user_name(value)
+	{
+		if(value=='')	
+		{
+			$("#user_name_notice").html("请输入管理登录用户名!");
+		}
+		else
+		{
+			Ajax.call( 'enter.php?act=is_user_name', 'user_name=' + value, user_name_callback , 'GET', 'TEXT', true, true );
+			//$("#suppliers_name_notice").html("");	
+		}
+	}
+	function user_name_callback(result){
+		if(result==1){
+			$('#user_name_notice').html('管理登录用户名已存在');
+		}else{
+			$('#user_name_notice').html('');
+		}
+	}
+	function check_address(value)
+	{
+		if(value=='')
+		{
+			$("#address_notice").html("请输入详细地址!");
+		}
+		else
+		{
+			$("#address_notice").html("");
+		}
+	}
+
+
+	function checkreal_name(value)
+	{
+		if(value=='')
+		{
+			$("#real_name_notice").html("请输入店长姓名!");
+		}
+		else
+		{
+			$("#real_name_notice").html("");
+		}
+	}
+	function check_phone(value)
+	{
+		var reg2 = /^1[345678]\d{9}$/;
+		if(value=='')
+		{
+			$("#phone_notice").html("请输入店长手机号码!");
+		}
+		else if(!reg2.test(value))
+		{
+			$("#phone_notice").html("请输入正确店长手机号码!");
+		}	
+		else
+		{
+			$("#phone_notice").html("");
+		}
+	}
+
+</script>
+</head>
+<body>
+<div class="enter_tit">商家入驻</div>
+<div class="enter">
+<form action="enter.php" name="myfrom"  enctype="multipart/form-data"   method="post" onSubmit="return regs();">
+            <p>
+                <label>商家名称：</label>
+                <input name="suppliers_name" type="text" onblur="check_suppliers_name(this.value);" id="suppliers_name" class="inp"/>
+                 <span id="suppliers_name_notice" style="color:#F00;"></span>
+                
+            </p>
+            <p>
+                <label>所属行业：</label>
+	              <select name="hangye_id" id="hangye_id" style="width: 100%">
+			        <option value="">请选择</option>
+			        {foreach from=$hangye item=item}
+			        <option value="{$item.id}">{$item.name}</option>
+				        {foreach from=$item.children item=child}
+				        <option value="{$child.id}"> └──{$child.name}</option>
+				        {/foreach}
+			        {/foreach}
+			      </select>
+                
+            </p>
+            <p>
+                <label>经营区域：</label>
+            <select name="province_id" id="selProvinces" onchange="region.changed(this, 2, 'selCities')">
+           <option value=''>请选择</option>
+             {foreach from=$provinces item=region}
+               <option value="{$region.region_id}" {if $region.region_id eq $supp_list.province_id} selected="selected"{/if}> {$region.region_name}</option>
+             {/foreach}
+         </select>
+		  <select name="city_id" id="selCities"  onchange="region.changed(this, 3, 'selDistricts')">
+          <option value=''>请选择</option>
+
+            {foreach from=$cities item=region}
+              <option value="{$region.region_id}" {if $region.region_id eq $supp_list.city_id}selected="selected"{/if}>{$region.region_name}</option>
+            {/foreach}
+        </select>
+         <select name="district_id" id="selDistricts">
+				<option value="0">请选择</option>
+				{foreach from=$district_list item=district}
+				<option value="{$district.region_id}" {if $district.region_id eq $supp_list.district_id}selected="selected"{/if}  >{$district.region_name}</option>
+				{/foreach}
+		</select> 
+    
+            </p>
+            <p>
+                <label>详细地址：</label>
+                <input name="address" onblur="check_address(this.value);" type="text" id="address" class="inp" />    <span id="address_notice"  style="color:#F00;"></span>  
+            </p>
+
+            <p>
+                <label>店长：</label>
+                <input name="real_name" type="text" onblur="checkreal_name(this.value);" id="real_name" class="inp" />
+           		 <span id="real_name_notice"  style="color:#F00;"></span>  
+            </p>
+            <p>
+                <label>店长手机号码：</label>
+                <input name="phone" type="text" onblur="check_phone(this.value);" id="phone" class="inp" />
+                 <span id="phone_notice"  style="color:#F00;"></span>  
+            </p>
+            <p>
+                <label>管理登录用户名：</label>
+                <input name="user_name" type="text" id="user_name" class="inp" onblur="check_user_name(this.value);" />
+           		 <span id="user_name_notice" style="color:#F00;"></span>  
+            </p>
+            <p>
+                <label>登录密码：</label>
+                <input name="password" type="password" id="password" class="inp" />
+           		 <span id="password_notice" style="color:#F00;"></span>  
+            </p>
+            <p>
+                <label>密码确认：</label>
+                <input name="password1" type="password" id="password1" class="inp" />
+           		 <span id="password_notice" style="color:#F00;"></span>  
+            </p>
+
+            <p>
+                <input name="act" type="hidden" value="enter_act">
+                
+                <input name="Submit" type="submit" value="立即入驻" class="us_Submit_reg">
+            </p>
+
+</form>
+</div>
+   <script>
+	region.isAdmin = true;
+	</script>
+<div class="blank"></div>
+<!-- #BeginLibraryItem "/library/footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+</html>
